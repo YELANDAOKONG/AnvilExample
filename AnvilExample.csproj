@@ -16,4 +16,8 @@
       <PackageReference Include="System.Text.Json" Version="10.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\AnvilASM\Anvil\Anvil.csproj" />
+    </ItemGroup>
+
 </Project>
