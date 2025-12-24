@@ -297,7 +297,7 @@ public class ClassInspector
                 {
                     var m = bsm.BootstrapMethods[i];
                     var args = string.Join(", ", m.BootstrapArguments.Select(a => "#" + a.Value));
-                    bsmNode.AddNode($"[{i}] Ref: #{m.BootstrapMethodRef}, Args: [{args}]");
+                    bsmNode.AddNode($"[[{i}]] Ref: #{m.BootstrapMethodRef}, Args: [[{args}]]");
                 }
                 break;
 
@@ -427,17 +427,18 @@ public class ClassInspector
                 FullFrame full => $"[grey]Full[/] (Delta: {full.OffsetDelta.Value}) L:{FormatVerificationTypes(full.Locals)} S:{FormatVerificationTypes(full.Stack)}",
                 _ => $"Unknown Frame {frame.FrameType}"
             };
-            // FIX: Escaped brackets for frame index to prevent markup errors
+            
             parent.AddNode($"[[{frameIndex++}]] {text}");
         }
     }
 
+
     private string FormatVerificationTypes(VerificationTypeInfo[] types)
     {
-        if (types.Length == 0) return "[]";
-        // FIX: Escaped brackets [[ ]] so Spectre treats them as literals, not tags
+        if (types.Length == 0) return "[[]]";
         return "[[" + string.Join(", ", types.Select(FormatVerificationType)) + "]]";
     }
+
 
     private string FormatVerificationType(VerificationTypeInfo info)
     {
