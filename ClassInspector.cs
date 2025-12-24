@@ -384,8 +384,6 @@ public class ClassInspector
                 expNode.AddNode(text);
             }
         }
-        
-        // Similar logic for Opens, Provides, Uses can be added here following the pattern
     }
 
     private void FormatAnnotations(IHasTreeNodes parent, Annotation[] annotations)
@@ -429,14 +427,16 @@ public class ClassInspector
                 FullFrame full => $"[grey]Full[/] (Delta: {full.OffsetDelta.Value}) L:{FormatVerificationTypes(full.Locals)} S:{FormatVerificationTypes(full.Stack)}",
                 _ => $"Unknown Frame {frame.FrameType}"
             };
-            parent.AddNode($"[{frameIndex++}] {text}");
+            // FIX: Escaped brackets for frame index to prevent markup errors
+            parent.AddNode($"[[{frameIndex++}]] {text}");
         }
     }
 
     private string FormatVerificationTypes(VerificationTypeInfo[] types)
     {
         if (types.Length == 0) return "[]";
-        return "[" + string.Join(", ", types.Select(FormatVerificationType)) + "]";
+        // FIX: Escaped brackets [[ ]] so Spectre treats them as literals, not tags
+        return "[[" + string.Join(", ", types.Select(FormatVerificationType)) + "]]";
     }
 
     private string FormatVerificationType(VerificationTypeInfo info)
