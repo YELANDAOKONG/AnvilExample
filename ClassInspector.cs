@@ -1,5 +1,6 @@
 using System.Text;
 using Spectre.Console;
+using Anvil.Instructions;
 using Anvil.Interfaces;
 using Anvil.Structures;
 using Anvil.Structures.Attributes;
@@ -24,8 +25,14 @@ public class ClassInspector
         _cf = classFile;
     }
 
-    public void Display()
+    private bool _showInstructions;
+    private bool _roundTrip;
+
+    public void Display(bool showInstructions = false, bool roundTrip = false)
     {
+        _showInstructions = showInstructions;
+        _roundTrip = roundTrip;
+
         PrintHeader();
         PrintConstantPool();
         PrintInterfaces();
@@ -205,6 +212,14 @@ public class ClassInspector
 
             case CodeAttribute code:
                 node.AddNode($"MaxStack: [yellow]{code.MaxStack}[/], MaxLocals: [yellow]{code.MaxLocals}[/], Code Size: [yellow]{code.Code.Length}[/] bytes");
+                if (_showInstructions && code.Code.Length > 0)
+                {
+                    PrintInstructions(node, code);
+                }
+                if (_roundTrip && code.Code.Length > 0)
+                {
+                    PrintRoundTrip(node, code);
+                }
                 if (code.Attributes.Length > 0)
                 {
                     var subNode = node.AddNode("Sub-Attributes");
@@ -513,5 +528,155 @@ public class ClassInspector
             CpString s => $"\"{Markup.Escape(ResolveUtf8(s.StringIndex))}\"",
             _ => $"#{index.Value}"
         };
+    }
+
+    private void PrintInstructions(IHasTreeNodes parentNode, CodeAttribute code)
+    {
+        var body = MethodBody.FromCodeAttribute(code, _cf.ConstantPool);
+        var insnNode = parentNode.AddNode("[bold aqua]Instructions[/]");
+
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumns("PC", "OpCode", "Operands", "Labels");
+
+        foreach (var insn in body.Instructions)
+        {
+            var pc = insn.Offset?.ToString("X4") ?? "????";
+            var labels = insn.Labels.Count > 0
+                ? $"[teal]{string.Join(", ", insn.Labels.Select(l => Markup.Escape(l.ToString())))}[/]"
+                : "";
+
+            var (opcode, operands) = FormatInstruction(insn);
+
+            table.AddRow(
+                new Markup($"[grey]{pc}[/]"),
+                new Markup($"[yellow]{opcode}[/]"),
+                new Markup(operands),
+                new Markup(labels));
+        }
+
+        insnNode.AddNode(table);
+
+        if (body.TryCatchBlocks.Count > 0)
+        {
+            var tcNode = insnNode.AddNode("[bold fuchsia]TryCatchBlocks[/]");
+            foreach (var block in body.TryCatchBlocks)
+            {
+                var type = block.CatchType ?? "finally";
+                tcNode.AddNode(
+                    $"try [[[teal]{Markup.Escape(block.Start.ToString())}[/]..[teal]{Markup.Escape(block.End.ToString())}[/]) " +
+                    $"catch([green]{Markup.Escape(type)}[/]) -> [teal]{Markup.Escape(block.Handler.ToString())}[/]");
+            }
+        }
+    }
+
+    private static (string OpCode, string Operands) FormatInstruction(Instruction insn)
+    {
+        switch (insn)
+        {
+            case InsnInstruction:
+                return (insn.OpCode.ToString(), "");
+
+            case IntInstruction i:
+                return (insn.OpCode.ToString(), i.Value.ToString());
+
+            case VarInstruction v:
+                return (insn.OpCode.ToString(), v.VarIndex.ToString());
+
+            case IincInstruction iinc:
+                return (insn.OpCode.ToString(), $"{iinc.VarIndex}, {iinc.Increment}");
+
+            case LdcInstruction ldc:
+            {
+                var value = ldc.Value switch
+                {
+                    string s => $"\"{Markup.Escape(s)}\"",
+                    float f => $"{f}f",
+                    long l => $"{l}L",
+                    double d => $"{d}d",
+                    null => $"#{ldc.ConstantIndex}",
+                    var v => v.ToString()!
+                };
+                return (insn.OpCode.ToString(), value);
+            }
+
+            case FieldInstruction f:
+                if (f.Owner != null)
+                    return (insn.OpCode.ToString(), $"{Markup.Escape(f.Owner)}.{Markup.Escape(f.Name!)} {Markup.Escape(f.Descriptor!)}");
+                return (insn.OpCode.ToString(), $"#{f.FieldRefIndex}");
+
+            case MethodInstruction m:
+                if (m.Owner != null)
+                    return (insn.OpCode.ToString(), $"{Markup.Escape(m.Owner)}.{Markup.Escape(m.Name!)} {Markup.Escape(m.Descriptor!)}");
+                return (insn.OpCode.ToString(), $"#{m.MethodRefIndex}");
+
+            case InvokeDynamicInstruction id:
+                return (insn.OpCode.ToString(), $"#{id.BootstrapMethodAttrIndex}");
+
+            case TypeInstruction t:
+                if (t.Type != null)
+                    return (insn.OpCode.ToString(), Markup.Escape(t.Type));
+                return (insn.OpCode.ToString(), $"#{t.TypeIndex}");
+
+            case MultiANewArrayInstruction ma:
+                if (ma.Type != null)
+                    return (insn.OpCode.ToString(), $"{Markup.Escape(ma.Type)} dims={ma.Dimensions}");
+                return (insn.OpCode.ToString(), $"#{ma.TypeIndex} dims={ma.Dimensions}");
+
+            case JumpInstruction j:
+                return (insn.OpCode.ToString(), $"-> [teal]{Markup.Escape(j.Target.ToString())}[/]");
+
+            case TableSwitchInstruction ts:
+                return (insn.OpCode.ToString(),
+                    $"low={ts.Low} high={ts.High} default=[teal]{Markup.Escape(ts.DefaultTarget.ToString())}[/]");
+
+            case LookupSwitchInstruction ls:
+                return (insn.OpCode.ToString(),
+                    $"npairs={ls.Pairs.Count} default=[teal]{Markup.Escape(ls.DefaultTarget.ToString())}[/]");
+
+            default:
+                return (insn.OpCode.ToString(), "");
+        }
+    }
+
+    private void PrintRoundTrip(IHasTreeNodes parentNode, CodeAttribute code)
+    {
+        var body = MethodBody.FromCodeAttribute(code, _cf.ConstantPool);
+        var cp = new ConstantPoolBuilder();
+        var regenerated = body.ToCodeAttribute(cp);
+
+        var originalBytes = code.Code;
+        var regeneratedBytes = regenerated.Code;
+        var sameLength = originalBytes.Length == regeneratedBytes.Length;
+
+        var rtNode = parentNode.AddNode("[bold lime]Round-Trip[/]");
+
+        if (sameLength)
+        {
+            var match = true;
+            for (var i = 0; i < originalBytes.Length; i++)
+            {
+                if (originalBytes[i] != regeneratedBytes[i])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                rtNode.AddNode("[green]PASS[/] Bytecode is identical.");
+            }
+            else
+            {
+                rtNode.AddNode("[yellow]DIFF[/] Same length but bytes differ (expected — CP indices may vary).");
+            }
+        }
+        else
+        {
+            rtNode.AddNode($"[yellow]LENGTH DIFF[/] Original: {originalBytes.Length}, Regenerated: {regeneratedBytes.Length}");
+        }
+
+        rtNode.AddNode($"Instructions: {body.Instructions.Count}, TryCatch: {body.TryCatchBlocks.Count}, CP entries: {cp.Count}");
     }
 }

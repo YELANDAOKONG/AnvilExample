@@ -13,6 +13,8 @@ public static class Program
         // 2. Parse Arguments
         var filePath = args.FirstOrDefault(a => !a.StartsWith("-")) ?? "Test.class";
         var useClassic = args.Any(a => a.Equals("--classic", StringComparison.OrdinalIgnoreCase) || a.Equals("-c"));
+        var showInstructions = args.Any(a => a.Equals("--instructions", StringComparison.OrdinalIgnoreCase) || a.Equals("-i"));
+        var roundTrip = args.Any(a => a.Equals("--roundtrip", StringComparison.OrdinalIgnoreCase) || a.Equals("-r"));
 
         if (!File.Exists(filePath))
         {
@@ -32,11 +34,11 @@ public static class Program
         {
             if (useClassic)
             {
-                RunClassic(filePath);
+                RunClassic(filePath, showInstructions);
             }
             else
             {
-                RunModern(filePath);
+                RunModern(filePath, showInstructions, roundTrip);
             }
         }
         catch (Exception ex)
@@ -56,7 +58,7 @@ public static class Program
         }
     }
 
-    private static void RunClassic(string filePath)
+    private static void RunClassic(string filePath, bool showInstructions)
     {
         Console.WriteLine($"Parsing: {Path.GetFullPath(filePath)}");
         Console.WriteLine(new string('-', 50));
@@ -65,13 +67,13 @@ public static class Program
         var classFile = ClassFile.Read(fs);
 
         var inspector = new ClassicClassInspector(classFile);
-        inspector.Display();
+        inspector.Display(showInstructions);
 
         Console.WriteLine(new string('-', 50));
         Console.WriteLine("Parse Completed Successfully.");
     }
 
-    private static void RunModern(string filePath)
+    private static void RunModern(string filePath, bool showInstructions, bool roundTrip)
     {
         AnsiConsole.Write(new FigletText("Anvil Debugger").Color(Color.Cyan1));
         
@@ -86,7 +88,7 @@ public static class Program
                 AnsiConsole.Write(new Rule());
 
                 var inspector = new ClassInspector(classFile);
-                inspector.Display();
+                inspector.Display(showInstructions, roundTrip);
             });
     }
 }

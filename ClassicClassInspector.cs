@@ -1,4 +1,5 @@
 using System.Text;
+using Anvil.Instructions;
 using Anvil.Interfaces;
 using Anvil.Structures;
 using Anvil.Structures.Attributes;
@@ -23,8 +24,11 @@ public class ClassicClassInspector
         _cf = classFile;
     }
 
-    public void Display()
+    private bool _showInstructions;
+
+    public void Display(bool showInstructions = false)
     {
+        _showInstructions = showInstructions;
         PrintHeader();
         PrintConstantPool();
         PrintInterfaces();
@@ -200,6 +204,10 @@ public class ClassicClassInspector
 
             case CodeAttribute code:
                 Console.WriteLine($"{indent}MaxStack: {code.MaxStack}, MaxLocals: {code.MaxLocals}, Code Size: {code.Code.Length} bytes");
+                if (_showInstructions && code.Code.Length > 0)
+                {
+                    PrintInstructions(classCode: code, indent: indent + "  ");
+                }
                 if (code.Attributes.Length > 0)
                 {
                     Console.WriteLine($"{indent}Sub-Attributes:");
@@ -525,5 +533,95 @@ public class ClassicClassInspector
             CpString s => $"\"{ResolveUtf8(s.StringIndex)}\"",
             _ => $"#{index.Value}"
         };
+    }
+
+    private void PrintInstructions(CodeAttribute classCode, string indent)
+    {
+        var body = MethodBody.FromCodeAttribute(classCode, _cf.ConstantPool);
+        Console.WriteLine($"{indent}Instructions ({body.Instructions.Count}):");
+
+        foreach (var insn in body.Instructions)
+        {
+            var pc = insn.Offset?.ToString("X4") ?? "????";
+            var labels = insn.Labels.Count > 0
+                ? $"  ; labels: [{string.Join(", ", insn.Labels)}]"
+                : "";
+
+            Console.WriteLine($"{indent}  [{pc}] {FormatInstructionText(insn)}{labels}");
+        }
+
+        if (body.TryCatchBlocks.Count > 0)
+        {
+            Console.WriteLine($"{indent}TryCatchBlocks:");
+            foreach (var block in body.TryCatchBlocks)
+            {
+                var type = block.CatchType ?? "finally";
+                Console.WriteLine($"{indent}  try [{block.Start}..{block.End}) catch({type}) -> {block.Handler}");
+            }
+        }
+    }
+
+    private static string FormatInstructionText(Instruction insn)
+    {
+        switch (insn)
+        {
+            case InsnInstruction:
+                return insn.OpCode.ToString();
+
+            case IntInstruction i:
+                return $"{insn.OpCode} {i.Value}";
+
+            case VarInstruction v:
+                return $"{insn.OpCode} {v.VarIndex}";
+
+            case IincInstruction iinc:
+                return $"{insn.OpCode} {iinc.VarIndex} {iinc.Increment}";
+
+            case LdcInstruction ldc:
+            {
+                var value = ldc.Value switch
+                {
+                    string s => $"\"{s}\"",
+                    null => $"#{ldc.ConstantIndex}",
+                    var v => v.ToString()!
+                };
+                return $"{insn.OpCode} {value}";
+            }
+
+            case FieldInstruction f:
+                if (f.Owner != null)
+                    return $"{insn.OpCode} {f.Owner}.{f.Name} {f.Descriptor}";
+                return $"{insn.OpCode} #{f.FieldRefIndex}";
+
+            case MethodInstruction m:
+                if (m.Owner != null)
+                    return $"{insn.OpCode} {m.Owner}.{m.Name} {m.Descriptor}";
+                return $"{insn.OpCode} #{m.MethodRefIndex}";
+
+            case TypeInstruction t:
+                if (t.Type != null)
+                    return $"{insn.OpCode} {t.Type}";
+                return $"{insn.OpCode} #{t.TypeIndex}";
+
+            case MultiANewArrayInstruction ma:
+                if (ma.Type != null)
+                    return $"{insn.OpCode} {ma.Type} dims={ma.Dimensions}";
+                return $"{insn.OpCode} #{ma.TypeIndex} dims={ma.Dimensions}";
+
+            case InvokeDynamicInstruction id:
+                return $"{insn.OpCode} #{id.BootstrapMethodAttrIndex}";
+
+            case JumpInstruction j:
+                return $"{insn.OpCode} -> {j.Target}";
+
+            case TableSwitchInstruction ts:
+                return $"{insn.OpCode} low={ts.Low} high={ts.High} default={ts.DefaultTarget}";
+
+            case LookupSwitchInstruction ls:
+                return $"{insn.OpCode} npairs={ls.Pairs.Count} default={ls.DefaultTarget}";
+
+            default:
+                return insn.OpCode.ToString();
+        }
     }
 }
