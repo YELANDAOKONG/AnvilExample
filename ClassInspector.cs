@@ -1,6 +1,7 @@
 using System.Text;
 using Spectre.Console;
 using Anvil.Instructions;
+using Anvil.Instructions.ConstantPool;
 using Anvil.Interfaces;
 using Anvil.Structures;
 using Anvil.Structures.Attributes;
