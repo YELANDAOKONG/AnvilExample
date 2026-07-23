@@ -1,5 +1,5 @@
-using System.Text;
 using Anvil.Instructions;
+using Anvil.Instructions.ConstantPool;
 using Anvil.Interfaces;
 using Anvil.Structures;
 using Anvil.Structures.Attributes;
@@ -25,10 +25,17 @@ public class ClassicClassInspector
     }
 
     private bool _showInstructions;
+    private bool _showControlFlow;
+    private bool _roundTrip;
 
-    public void Display(bool showInstructions = false)
+    public void Display(
+        bool showInstructions = false,
+        bool showControlFlow = false,
+        bool roundTrip = false)
     {
         _showInstructions = showInstructions;
+        _showControlFlow = showControlFlow;
+        _roundTrip = roundTrip;
         PrintHeader();
         PrintConstantPool();
         PrintInterfaces();
@@ -207,6 +214,14 @@ public class ClassicClassInspector
                 if (_showInstructions && code.Code.Length > 0)
                 {
                     PrintInstructions(classCode: code, indent: indent + "  ");
+                }
+                if (_showControlFlow && code.Code.Length > 0)
+                {
+                    PrintControlFlow(code, indent + "  ");
+                }
+                if (_roundTrip && code.Code.Length > 0)
+                {
+                    PrintRoundTrip(code, indent + "  ");
                 }
                 if (code.Attributes.Length > 0)
                 {
@@ -540,14 +555,27 @@ public class ClassicClassInspector
         var body = MethodBody.FromCodeAttribute(classCode, _cf.ConstantPool);
         Console.WriteLine($"{indent}Instructions ({body.Instructions.Count}):");
 
-        foreach (var insn in body.Instructions)
+        for (var index = 0; index < body.Instructions.Count; index++)
         {
+            var insn = body.Instructions[index];
             var pc = insn.Offset?.ToString("X4") ?? "????";
+            var endOffset = index + 1 < body.Instructions.Count
+                ? body.Instructions[index + 1].Offset
+                : classCode.Code.Length;
+            var bytes = BytecodeFormatter.FormatRawBytes(
+                classCode.Code,
+                insn,
+                endOffset
+                ?? throw new InvalidOperationException(
+                    "The next instruction has no resolved offset."));
             var labels = insn.Labels.Count > 0
                 ? $"  ; labels: [{string.Join(", ", insn.Labels)}]"
                 : "";
 
-            Console.WriteLine($"{indent}  [{pc}] {FormatInstructionText(insn)}{labels}");
+            Console.WriteLine(
+                $"{indent}  [{pc}] {bytes,-24} "
+                + $"{insn.OpCode,-18} {BytecodeFormatter.FormatOperands(insn)}"
+                + labels);
         }
 
         if (body.TryCatchBlocks.Count > 0)
@@ -561,67 +589,106 @@ public class ClassicClassInspector
         }
     }
 
-    private static string FormatInstructionText(Instruction insn)
+    private void PrintControlFlow(CodeAttribute code, string indent)
     {
-        switch (insn)
+        var body = MethodBody.FromCodeAttribute(code, _cf.ConstantPool);
+        var graph = ControlFlowGraphBuilder.Build(body, code.Code.Length);
+        var reachableCount = graph.Blocks.Count(block => block.IsReachable);
+        var exceptionEdgeCount = graph.Edges.Count(edge =>
+            edge.Kind == ControlFlowEdgeKind.Exception);
+        var backwardEdgeCount = graph.Edges.Count(edge => edge.IsBackward);
+
+        Console.WriteLine($"{indent}Control Flow Graph:");
+        Console.WriteLine(
+            $"{indent}  Blocks: {graph.Blocks.Count}, "
+            + $"Edges: {graph.Edges.Count}, "
+            + $"Reachable: {reachableCount}, "
+            + $"Exits: {graph.ExitBlocks.Count}, "
+            + $"Backward: {backwardEdgeCount}, "
+            + $"Exception: {exceptionEdgeCount}");
+
+        Console.WriteLine($"{indent}  Basic Blocks:");
+        foreach (var block in graph.Blocks)
         {
-            case InsnInstruction:
-                return insn.OpCode.ToString();
-
-            case IntInstruction i:
-                return $"{insn.OpCode} {i.Value}";
-
-            case VarInstruction v:
-                return $"{insn.OpCode} {v.VarIndex}";
-
-            case IincInstruction iinc:
-                return $"{insn.OpCode} {iinc.VarIndex} {iinc.Increment}";
-
-            case LdcInstruction ldc:
+            var states = new List<string>();
+            if (block == graph.Entry)
             {
-                var value = ldc.Value switch
-                {
-                    string s => $"\"{s}\"",
-                    null => $"#{ldc.ConstantIndex}",
-                    var v => v.ToString()!
-                };
-                return $"{insn.OpCode} {value}";
+                states.Add("entry");
             }
 
-            case FieldInstruction f:
-                if (f.Owner != null)
-                    return $"{insn.OpCode} {f.Owner}.{f.Name} {f.Descriptor}";
-                return $"{insn.OpCode} #{f.FieldRefIndex}";
+            if (graph.ExitBlocks.Contains(block))
+            {
+                states.Add("exit");
+            }
 
-            case MethodInstruction m:
-                if (m.Owner != null)
-                    return $"{insn.OpCode} {m.Owner}.{m.Name} {m.Descriptor}";
-                return $"{insn.OpCode} #{m.MethodRefIndex}";
+            if (!block.IsReachable)
+            {
+                states.Add("unreachable");
+            }
 
-            case TypeInstruction t:
-                if (t.Type != null)
-                    return $"{insn.OpCode} {t.Type}";
-                return $"{insn.OpCode} #{t.TypeIndex}";
+            var state = states.Count == 0
+                ? "reachable"
+                : string.Join(", ", states);
+            var successors = graph.Edges
+                .Where(edge => edge.Source == block)
+                .Select(FormatEdgeTarget)
+                .ToList();
 
-            case MultiANewArrayInstruction ma:
-                if (ma.Type != null)
-                    return $"{insn.OpCode} {ma.Type} dims={ma.Dimensions}";
-                return $"{insn.OpCode} #{ma.TypeIndex} dims={ma.Dimensions}";
-
-            case InvokeDynamicInstruction id:
-                return $"{insn.OpCode} #{id.BootstrapMethodAttrIndex}";
-
-            case JumpInstruction j:
-                return $"{insn.OpCode} -> {j.Target}";
-
-            case TableSwitchInstruction ts:
-                return $"{insn.OpCode} low={ts.Low} high={ts.High} default={ts.DefaultTarget}";
-
-            case LookupSwitchInstruction ls:
-                return $"{insn.OpCode} npairs={ls.Pairs.Count} default={ls.DefaultTarget}";
-
-            default:
-                return insn.OpCode.ToString();
+            Console.WriteLine(
+                $"{indent}    {block.Id,-4} "
+                + $"[{block.StartOffset:X4}..{block.EndOffset:X4}) "
+                + $"{state}; instructions={block.Instructions.Count}; "
+                + $"successors="
+                + (successors.Count == 0
+                    ? "<exit>"
+                    : string.Join(", ", successors)));
         }
+
+        Console.WriteLine($"{indent}  Edges:");
+        foreach (var edge in graph.Edges)
+        {
+            var detail = edge.Detail is null ? string.Empty : $" ({edge.Detail})";
+            var backward = edge.IsBackward ? " [backward]" : string.Empty;
+            Console.WriteLine(
+                $"{indent}    {edge.Source.Id} -> {edge.Target.Id}: "
+                + $"{edge.Kind}{detail}{backward}");
+        }
+    }
+
+    private static string FormatEdgeTarget(ControlFlowEdge edge)
+    {
+        var detail = edge.Detail is null ? string.Empty : $":{edge.Detail}";
+        return $"{edge.Kind}{detail}->{edge.Target.Id}";
+    }
+
+    private void PrintRoundTrip(CodeAttribute code, string indent)
+    {
+        var body = MethodBody.FromCodeAttribute(code, _cf.ConstantPool);
+        var constantPool = new ConstantPoolBuilder();
+        var regenerated = body.ToCodeAttribute(constantPool);
+        var identical = code.Code.SequenceEqual(regenerated.Code);
+
+        Console.WriteLine($"{indent}Round-Trip:");
+        if (identical)
+        {
+            Console.WriteLine($"{indent}  PASS: Bytecode is identical.");
+        }
+        else if (code.Code.Length == regenerated.Code.Length)
+        {
+            Console.WriteLine(
+                $"{indent}  DIFF: Same length but bytes differ "
+                + "(constant-pool indices may vary).");
+        }
+        else
+        {
+            Console.WriteLine(
+                $"{indent}  LENGTH DIFF: Original={code.Code.Length}, "
+                + $"Regenerated={regenerated.Code.Length}.");
+        }
+
+        Console.WriteLine(
+            $"{indent}  Instructions={body.Instructions.Count}, "
+            + $"TryCatch={body.TryCatchBlocks.Count}, "
+            + $"CP entries={constantPool.Count}");
     }
 }

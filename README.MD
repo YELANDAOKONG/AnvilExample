@@ -67,11 +67,37 @@ If your terminal does not support ANSI colors or you want raw text output.
 dotnet run -- MyJavaClass.class --classic
 ```
 
-**3. Default Behavior:**
+**3. Show decoded bytecode and raw instruction bytes:**
+```bash
+dotnet run -- MyJavaClass.class --instructions
+```
+
+**4. Show the control-flow graph:**
+```bash
+dotnet run -- MyJavaClass.class --control-flow
+```
+
+**5. Show all advanced analysis:**
+```bash
+dotnet run -- MyJavaClass.class --all
+```
+
+**6. Default Behavior:**
 If no arguments are provided, the program attempts to read a file named `Test.class` in the working directory.
 ```bash
 dotnet run
 ```
+
+### Options
+
+| Option | Short | Description |
+|---|---:|---|
+| `--classic` | `-c` | Use plain-text output instead of Spectre.Console. |
+| `--instructions` | `-i` | Show instruction offsets, raw bytes, opcodes, symbolic operands, and labels. |
+| `--control-flow`, `--cfg` | `-g` | Show basic blocks and typed control-flow edges. |
+| `--roundtrip` | `-r` | Rebuild each method and compare its bytecode. |
+| `--all` | `-a` | Enable instructions, control flow, and round-trip analysis. |
+| `--help` | `-h` | Show command-line help. |
 
 ## ✨ Features
 
@@ -86,12 +112,24 @@ This example demonstrates how to traverse the AnvilASM object model:
     *   `Module` (Exports, Requires, Opens).
     *   `Record` components.
     *   `Annotations` (RuntimeVisible/Invisible).
+*   **Detailed Bytecode**:
+    *   Raw hexadecimal bytes for every instruction.
+    *   Resolved field, method, type, constant, and invokedynamic operands.
+    *   Complete `tableswitch` and `lookupswitch` case targets.
+    *   String labels and exception-handler regions.
+*   **Control-Flow Analysis**:
+    *   Basic-block ranges and instruction counts.
+    *   Entry, exit, reachable, and unreachable block states.
+    *   Fall-through, conditional, unconditional, switch, and exception edges.
+    *   Backward-edge detection for loop-oriented inspection.
 
 ## 🛠️ Code Overview
 
 *   **`Program.cs`**: Entry point handling CLI arguments and error reporting.
 *   **`ClassInspector.cs`**: The "Modern" implementation. It shows how to use `Spectre.Console` to render the `Anvil.Structures.ClassFile` object model into interactive grids and trees.
 *   **`ClassicClassInspector.cs`**: A fallback implementation using standard `System.Console`. It demonstrates how to access the raw data properties of the library without external UI dependencies.
+*   **`BytecodeFormatter.cs`**: Shared raw-byte and symbolic operand formatting.
+*   **`ControlFlowGraphBuilder.cs`**: Builds basic blocks and typed edges from label-based `MethodBody` instructions.
 
 ## 📄 License
 

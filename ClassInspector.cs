@@ -1,5 +1,5 @@
-using System.Text;
 using Spectre.Console;
+
 using Anvil.Instructions;
 using Anvil.Instructions.ConstantPool;
 using Anvil.Interfaces;
@@ -27,11 +27,16 @@ public class ClassInspector
     }
 
     private bool _showInstructions;
+    private bool _showControlFlow;
     private bool _roundTrip;
 
-    public void Display(bool showInstructions = false, bool roundTrip = false)
+    public void Display(
+        bool showInstructions = false,
+        bool showControlFlow = false,
+        bool roundTrip = false)
     {
         _showInstructions = showInstructions;
+        _showControlFlow = showControlFlow;
         _roundTrip = roundTrip;
 
         PrintHeader();
@@ -216,6 +221,10 @@ public class ClassInspector
                 if (_showInstructions && code.Code.Length > 0)
                 {
                     PrintInstructions(node, code);
+                }
+                if (_showControlFlow && code.Code.Length > 0)
+                {
+                    PrintControlFlow(node, code);
                 }
                 if (_roundTrip && code.Code.Length > 0)
                 {
@@ -538,21 +547,31 @@ public class ClassInspector
 
         var table = new Table()
             .Border(TableBorder.Rounded)
-            .AddColumns("PC", "OpCode", "Operands", "Labels");
+            .AddColumns("PC", "Bytes", "OpCode", "Operands", "Labels");
 
-        foreach (var insn in body.Instructions)
+        for (var index = 0; index < body.Instructions.Count; index++)
         {
+            var insn = body.Instructions[index];
             var pc = insn.Offset?.ToString("X4") ?? "????";
+            var endOffset = index + 1 < body.Instructions.Count
+                ? body.Instructions[index + 1].Offset
+                : code.Code.Length;
+            var bytes = BytecodeFormatter.FormatRawBytes(
+                code.Code,
+                insn,
+                endOffset
+                ?? throw new InvalidOperationException(
+                    "The next instruction has no resolved offset."));
             var labels = insn.Labels.Count > 0
                 ? $"[teal]{string.Join(", ", insn.Labels.Select(l => Markup.Escape(l.ToString())))}[/]"
                 : "";
-
-            var (opcode, operands) = FormatInstruction(insn);
+            var operands = BytecodeFormatter.FormatOperands(insn);
 
             table.AddRow(
                 new Markup($"[grey]{pc}[/]"),
-                new Markup($"[yellow]{opcode}[/]"),
-                new Markup(operands),
+                new Markup($"[grey]{bytes}[/]"),
+                new Markup($"[yellow]{insn.OpCode}[/]"),
+                new Markup(Markup.Escape(operands)),
                 new Markup(labels));
         }
 
@@ -571,73 +590,103 @@ public class ClassInspector
         }
     }
 
-    private static (string OpCode, string Operands) FormatInstruction(Instruction insn)
+    private void PrintControlFlow(
+        IHasTreeNodes parentNode,
+        CodeAttribute code)
     {
-        switch (insn)
+        var body = MethodBody.FromCodeAttribute(code, _cf.ConstantPool);
+        var graph = ControlFlowGraphBuilder.Build(body, code.Code.Length);
+        var reachableCount = graph.Blocks.Count(block => block.IsReachable);
+        var exceptionEdgeCount = graph.Edges.Count(edge =>
+            edge.Kind == ControlFlowEdgeKind.Exception);
+        var backwardEdgeCount = graph.Edges.Count(edge => edge.IsBackward);
+        var graphNode = parentNode.AddNode("[bold deepskyblue1]Control Flow Graph[/]");
+        graphNode.AddNode(
+            $"Blocks: [yellow]{graph.Blocks.Count}[/], "
+            + $"Edges: [yellow]{graph.Edges.Count}[/], "
+            + $"Reachable: [green]{reachableCount}[/], "
+            + $"Exits: [yellow]{graph.ExitBlocks.Count}[/], "
+            + $"Backward: [yellow]{backwardEdgeCount}[/], "
+            + $"Exception: [yellow]{exceptionEdgeCount}[/]");
+
+        var blockTable = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumns("Block", "Range", "State", "Instructions", "Successors");
+
+        foreach (var block in graph.Blocks)
         {
-            case InsnInstruction:
-                return (insn.OpCode.ToString(), "");
+            var state = GetBlockState(graph, block);
+            var instructionRange =
+                $"{block.Instructions[0].OpCode} .. {block.Instructions[^1].OpCode} "
+                + $"({block.Instructions.Count})";
+            var successors = graph.Edges
+                .Where(edge => edge.Source == block)
+                .Select(FormatEdgeTarget)
+                .ToList();
 
-            case IntInstruction i:
-                return (insn.OpCode.ToString(), i.Value.ToString());
+            blockTable.AddRow(
+                new Markup($"[aqua]{block.Id}[/]"),
+                new Markup($"[grey]{block.StartOffset:X4}..{block.EndOffset:X4}[/]"),
+                new Markup(Markup.Escape(state)),
+                new Markup(Markup.Escape(instructionRange)),
+                new Markup(Markup.Escape(
+                    successors.Count == 0
+                        ? "<exit>"
+                        : string.Join(", ", successors))));
+        }
 
-            case VarInstruction v:
-                return (insn.OpCode.ToString(), v.VarIndex.ToString());
+        graphNode.AddNode(blockTable);
 
-            case IincInstruction iinc:
-                return (insn.OpCode.ToString(), $"{iinc.VarIndex}, {iinc.Increment}");
-
-            case LdcInstruction ldc:
+        var edgeTable = new Table()
+            .Border(TableBorder.Simple)
+            .AddColumns("From", "To", "Kind", "Detail");
+        foreach (var edge in graph.Edges)
+        {
+            var detail = edge.Detail ?? string.Empty;
+            if (edge.IsBackward)
             {
-                var value = ldc.Value switch
-                {
-                    string s => $"\"{Markup.Escape(s)}\"",
-                    float f => $"{f}f",
-                    long l => $"{l}L",
-                    double d => $"{d}d",
-                    null => $"#{ldc.ConstantIndex}",
-                    var v => v.ToString()!
-                };
-                return (insn.OpCode.ToString(), value);
+                detail = string.IsNullOrEmpty(detail)
+                    ? "backward"
+                    : $"{detail}, backward";
             }
 
-            case FieldInstruction f:
-                if (f.Owner != null)
-                    return (insn.OpCode.ToString(), $"{Markup.Escape(f.Owner)}.{Markup.Escape(f.Name!)} {Markup.Escape(f.Descriptor!)}");
-                return (insn.OpCode.ToString(), $"#{f.FieldRefIndex}");
-
-            case MethodInstruction m:
-                if (m.Owner != null)
-                    return (insn.OpCode.ToString(), $"{Markup.Escape(m.Owner)}.{Markup.Escape(m.Name!)} {Markup.Escape(m.Descriptor!)}");
-                return (insn.OpCode.ToString(), $"#{m.MethodRefIndex}");
-
-            case InvokeDynamicInstruction id:
-                return (insn.OpCode.ToString(), $"#{id.BootstrapMethodAttrIndex}");
-
-            case TypeInstruction t:
-                if (t.Type != null)
-                    return (insn.OpCode.ToString(), Markup.Escape(t.Type));
-                return (insn.OpCode.ToString(), $"#{t.TypeIndex}");
-
-            case MultiANewArrayInstruction ma:
-                if (ma.Type != null)
-                    return (insn.OpCode.ToString(), $"{Markup.Escape(ma.Type)} dims={ma.Dimensions}");
-                return (insn.OpCode.ToString(), $"#{ma.TypeIndex} dims={ma.Dimensions}");
-
-            case JumpInstruction j:
-                return (insn.OpCode.ToString(), $"-> [teal]{Markup.Escape(j.Target.ToString())}[/]");
-
-            case TableSwitchInstruction ts:
-                return (insn.OpCode.ToString(),
-                    $"low={ts.Low} high={ts.High} default=[teal]{Markup.Escape(ts.DefaultTarget.ToString())}[/]");
-
-            case LookupSwitchInstruction ls:
-                return (insn.OpCode.ToString(),
-                    $"npairs={ls.Pairs.Count} default=[teal]{Markup.Escape(ls.DefaultTarget.ToString())}[/]");
-
-            default:
-                return (insn.OpCode.ToString(), "");
+            edgeTable.AddRow(
+                edge.Source.Id,
+                edge.Target.Id,
+                edge.Kind.ToString(),
+                Markup.Escape(detail));
         }
+
+        graphNode.AddNode(edgeTable);
+    }
+
+    private static string GetBlockState(
+        ControlFlowGraph graph,
+        BasicBlock block)
+    {
+        var states = new List<string>();
+        if (block == graph.Entry)
+        {
+            states.Add("entry");
+        }
+
+        if (graph.ExitBlocks.Contains(block))
+        {
+            states.Add("exit");
+        }
+
+        if (!block.IsReachable)
+        {
+            states.Add("unreachable");
+        }
+
+        return states.Count == 0 ? "reachable" : string.Join(", ", states);
+    }
+
+    private static string FormatEdgeTarget(ControlFlowEdge edge)
+    {
+        var detail = edge.Detail is null ? string.Empty : $":{edge.Detail}";
+        return $"{edge.Kind}{detail}->{edge.Target.Id}";
     }
 
     private void PrintRoundTrip(IHasTreeNodes parentNode, CodeAttribute code)
