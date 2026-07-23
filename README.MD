@@ -150,7 +150,7 @@ Access Flags: Public, Super
 This Class:   #8 (Test)
 Super Class:  #2 (java/lang/Object)
 
-=== Constant Pool (320 entries) ===
+=== Constant Pool (289 entries) ===
 #1    = Methodref          #2.#3
 #2    = Class              #4 // java/lang/Object
 #3    = NameAndType        #5:#6 // <init>:()V
@@ -355,120 +355,89 @@ Super Class:  #2 (java/lang/Object)
 #203  = Utf8               "Ljava/lang/Object;"
 #204  = Utf8               "Code"
 #205  = Utf8               "LineNumberTable"
-#206  = Utf8               "LocalVariableTable"
-#207  = Utf8               "this"
-#208  = Utf8               "LTest;"
-#209  = Utf8               "LocalVariableTypeTable"
-#210  = Utf8               "LTest<TT;>;"
-#211  = Utf8               "value"
-#212  = Utf8               "StackMapTable"
-#213  = Utf8               "MethodParameters"
-#214  = Utf8               "e"
-#215  = Utf8               "Ljava/lang/Exception;"
-#216  = Class              #217 // java/lang/Throwable
-#217  = Utf8               "java/lang/Throwable"
-#218  = Utf8               "Exceptions"
-#219  = Class              #220 // java/lang/IllegalArgumentException
-#220  = Utf8               "java/lang/IllegalArgumentException"
-#221  = Utf8               "names"
-#222  = Utf8               "Ljava/util/List;"
-#223  = Utf8               "printer"
-#224  = Utf8               "Ljava/util/function/Consumer;"
-#225  = Utf8               "J"
-#226  = Utf8               "Ljava/util/List<Ljava/lang/String;>;"
-#227  = Utf8               "Ljava/util/function/Consumer<Ljava/lang/String;>;"
-#228  = Utf8               "testGenerics"
-#229  = Utf8               "(Ljava/util/List;Ljava/util/Map;)V"
-#230  = Utf8               "num"
-#231  = Utf8               "Ljava/lang/Number;"
-#232  = Utf8               "numbers"
-#233  = Utf8               "map"
-#234  = Utf8               "Ljava/util/Map;"
-#235  = Utf8               "TE;"
-#236  = Utf8               "Ljava/util/List<TE;>;"
-#237  = Utf8               "Ljava/util/Map<Ljava/lang/String;TE;>;"
-#238  = Utf8               "Signature"
-#239  = Utf8               "<E:Ljava/lang/Number;>(Ljava/util/List<TE;>;Ljava/util/Map<Ljava/lang/String;TE;>;)V"
-#240  = Utf8               "testSyncAndMath"
-#241  = Utf8               "result"
-#242  = Utf8               "D"
-#243  = Utf8               "testVarargs"
-#244  = Utf8               "([Ljava/lang/String;)V"
-#245  = Utf8               "args"
-#246  = Utf8               "[Ljava/lang/String;"
-#247  = Utf8               "nativeMethodExample"
-#248  = Utf8               "r"
-#249  = Utf8               "Ljava/lang/Runnable;"
-#250  = Utf8               "main"
-#251  = Utf8               "LTest<Ljava/lang/Integer;>;"
-#252  = Class              #246 // [Ljava/lang/String;
-#253  = Utf8               "lambda$testLambdaAndStreams$1"
-#254  = Utf8               "s"
-#255  = Utf8               "lambda$testLambdaAndStreams$0"
-#256  = Utf8               "<T:Ljava/lang/Object;>Ljava/lang/Object;Ljava/lang/Cloneable;"
-#257  = Utf8               "SourceFile"
-#258  = Utf8               "Test.java"
-#259  = Utf8               "RuntimeVisibleAnnotations"
-#260  = Utf8               "LTestMetadata;"
-#261  = Utf8               "version"
-#262  = Integer            1
-#263  = Utf8               "NestMembers"
-#264  = Class              #265 // Test$InnerMember
-#265  = Utf8               "Test$InnerMember"
-#266  = Class              #267 // Test$StaticNested
-#267  = Utf8               "Test$StaticNested"
-#268  = Utf8               "BootstrapMethods"
-#269  = String             #270 // "IO or Null Error: "
-#270  = Utf8               "IO or Null Error: "
-#271  = String             #272 // "General Error: "
-#272  = Utf8               "General Error: "
-#273  = MethodType         Descriptor: #274 // (Ljava/lang/Object;)V
-#274  = Utf8               "(Ljava/lang/Object;)V"
-#275  = MethodHandle       Kind: 06, Ref: #276
-#276  = Methodref          #8.#277
-#277  = NameAndType        #255:#36 // lambda$testLambdaAndStreams$0:(Ljava/lang/String;)V
-#278  = MethodType         Descriptor: #36 // (Ljava/lang/String;)V
-#279  = MethodHandle       Kind: 05, Ref: #45
-#280  = MethodType         Descriptor: #281 // (Ljava/lang/Object;)Z
-#281  = Utf8               "(Ljava/lang/Object;)Z"
-#282  = MethodHandle       Kind: 06, Ref: #283
-#283  = Methodref          #8.#284
-#284  = NameAndType        #253:#190 // lambda$testLambdaAndStreams$1:(Ljava/lang/String;)Z
-#285  = MethodType         Descriptor: #190 // (Ljava/lang/String;)Z
-#286  = String             #287 // "Count: "
-#287  = Utf8               "Count: "
-#288  = String             #289 // "Number: "
-#289  = Utf8               "Number: "
-#290  = String             #291 // "Strict Result: "
-#291  = Utf8               "Strict Result: "
-#292  = String             #293 // "Args count: "
-#293  = Utf8               "Args count: "
-#294  = String             #295 // "Switch: "
-#295  = Utf8               "Switch: "
-#296  = String             #297 // "Name: "
-#297  = Utf8               "Name: "
-#298  = MethodHandle       Kind: 06, Ref: #299
-#299  = Methodref          #300.#301
-#300  = Class              #302 // java/lang/invoke/StringConcatFactory
-#301  = NameAndType        #63:#303 // makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
-#302  = Utf8               "java/lang/invoke/StringConcatFactory"
-#303  = Utf8               "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;"
-#304  = MethodHandle       Kind: 06, Ref: #305
-#305  = Methodref          #306.#307
-#306  = Class              #308 // java/lang/invoke/LambdaMetafactory
-#307  = NameAndType        #309:#310 // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-#308  = Utf8               "java/lang/invoke/LambdaMetafactory"
-#309  = Utf8               "metafactory"
-#310  = Utf8               "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;"
-#311  = Utf8               "InnerClasses"
-#312  = Utf8               "LocalClass"
-#313  = Utf8               "InnerMember"
-#314  = Utf8               "StaticNested"
-#315  = Class              #316 // java/lang/invoke/MethodHandles$Lookup
-#316  = Utf8               "java/lang/invoke/MethodHandles$Lookup"
-#317  = Class              #318 // java/lang/invoke/MethodHandles
-#318  = Utf8               "java/lang/invoke/MethodHandles"
-#319  = Utf8               "Lookup"
+#206  = Utf8               "StackMapTable"
+#207  = Class              #208 // java/lang/Throwable
+#208  = Utf8               "java/lang/Throwable"
+#209  = Utf8               "Exceptions"
+#210  = Class              #211 // java/lang/IllegalArgumentException
+#211  = Utf8               "java/lang/IllegalArgumentException"
+#212  = Utf8               "testGenerics"
+#213  = Utf8               "(Ljava/util/List;Ljava/util/Map;)V"
+#214  = Utf8               "Signature"
+#215  = Utf8               "<E:Ljava/lang/Number;>(Ljava/util/List<TE;>;Ljava/util/Map<Ljava/lang/String;TE;>;)V"
+#216  = Utf8               "testSyncAndMath"
+#217  = Utf8               "testVarargs"
+#218  = Utf8               "([Ljava/lang/String;)V"
+#219  = Utf8               "nativeMethodExample"
+#220  = Utf8               "main"
+#221  = Class              #222 // [Ljava/lang/String;
+#222  = Utf8               "[Ljava/lang/String;"
+#223  = Utf8               "lambda$testLambdaAndStreams$1"
+#224  = Utf8               "lambda$testLambdaAndStreams$0"
+#225  = Utf8               "<T:Ljava/lang/Object;>Ljava/lang/Object;Ljava/lang/Cloneable;"
+#226  = Utf8               "SourceFile"
+#227  = Utf8               "Test.java"
+#228  = Utf8               "RuntimeVisibleAnnotations"
+#229  = Utf8               "LTestMetadata;"
+#230  = Utf8               "version"
+#231  = Integer            1
+#232  = Utf8               "NestMembers"
+#233  = Class              #234 // Test$InnerMember
+#234  = Utf8               "Test$InnerMember"
+#235  = Class              #236 // Test$StaticNested
+#236  = Utf8               "Test$StaticNested"
+#237  = Utf8               "BootstrapMethods"
+#238  = String             #239 // "IO or Null Error: "
+#239  = Utf8               "IO or Null Error: "
+#240  = String             #241 // "General Error: "
+#241  = Utf8               "General Error: "
+#242  = MethodType         Descriptor: #243 // (Ljava/lang/Object;)V
+#243  = Utf8               "(Ljava/lang/Object;)V"
+#244  = MethodHandle       Kind: 06, Ref: #245
+#245  = Methodref          #8.#246
+#246  = NameAndType        #224:#36 // lambda$testLambdaAndStreams$0:(Ljava/lang/String;)V
+#247  = MethodType         Descriptor: #36 // (Ljava/lang/String;)V
+#248  = MethodHandle       Kind: 05, Ref: #45
+#249  = MethodType         Descriptor: #250 // (Ljava/lang/Object;)Z
+#250  = Utf8               "(Ljava/lang/Object;)Z"
+#251  = MethodHandle       Kind: 06, Ref: #252
+#252  = Methodref          #8.#253
+#253  = NameAndType        #223:#190 // lambda$testLambdaAndStreams$1:(Ljava/lang/String;)Z
+#254  = MethodType         Descriptor: #190 // (Ljava/lang/String;)Z
+#255  = String             #256 // "Count: "
+#256  = Utf8               "Count: "
+#257  = String             #258 // "Number: "
+#258  = Utf8               "Number: "
+#259  = String             #260 // "Strict Result: "
+#260  = Utf8               "Strict Result: "
+#261  = String             #262 // "Args count: "
+#262  = Utf8               "Args count: "
+#263  = String             #264 // "Switch: "
+#264  = Utf8               "Switch: "
+#265  = String             #266 // "Name: "
+#266  = Utf8               "Name: "
+#267  = MethodHandle       Kind: 06, Ref: #268
+#268  = Methodref          #269.#270
+#269  = Class              #271 // java/lang/invoke/StringConcatFactory
+#270  = NameAndType        #63:#272 // makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+#271  = Utf8               "java/lang/invoke/StringConcatFactory"
+#272  = Utf8               "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;"
+#273  = MethodHandle       Kind: 06, Ref: #274
+#274  = Methodref          #275.#276
+#275  = Class              #277 // java/lang/invoke/LambdaMetafactory
+#276  = NameAndType        #278:#279 // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+#277  = Utf8               "java/lang/invoke/LambdaMetafactory"
+#278  = Utf8               "metafactory"
+#279  = Utf8               "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;"
+#280  = Utf8               "InnerClasses"
+#281  = Utf8               "LocalClass"
+#282  = Utf8               "InnerMember"
+#283  = Utf8               "StaticNested"
+#284  = Class              #285 // java/lang/invoke/MethodHandles$Lookup
+#285  = Utf8               "java/lang/invoke/MethodHandles$Lookup"
+#286  = Class              #287 // java/lang/invoke/MethodHandles
+#287  = Utf8               "java/lang/invoke/MethodHandles"
+#288  = Utf8               "Lookup"
 
 === Interfaces (1) ===
 Interface: #192 (java/lang/Cloneable)
@@ -488,6 +457,27 @@ Field: Private complexArray [[[D
 Method: Public <init> ()V
   - Code: 
       MaxStack: 4, MaxLocals: 1, Code Size: 21 bytes
+        Instructions (12):
+          [0000] 2A                       ALOAD_0              ; labels: [L0000]
+          [0001] B7 00 01                 INVOKESPECIAL      java/lang/Object.<init> ()V  ; labels: [L0001]
+          [0004] 2A                       ALOAD_0              ; labels: [L0004]
+          [0005] 04                       ICONST_1             ; labels: [L0005]
+          [0006] B5 00 07                 PUTFIELD           Test.isRunning Z  ; labels: [L0006]
+          [0009] 2A                       ALOAD_0              ; labels: [L0009]
+          [000A] 05                       ICONST_2             ; labels: [L000A]
+          [000B] 05                       ICONST_2             ; labels: [L000B]
+          [000C] 05                       ICONST_2             ; labels: [L000C]
+          [000D] C5 00 0D 03              MULTIANEWARRAY     [[[D dims=3  ; labels: [L000D]
+          [0011] B5 00 0F                 PUTFIELD           Test.complexArray [[[D  ; labels: [L0011]
+          [0014] B1                       RETURN               ; labels: [L0014]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..0015) entry, exit; instructions=12; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=12, TryCatch=0, CP entries=19
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (4):
@@ -495,15 +485,48 @@ Method: Public <init> ()V
               PC 4 -> Line 64
               PC 9 -> Line 65
               PC 20 -> Line 66
-        - LocalVariableTable: 
-            Local Variables (1):
-              Slot 0: this LTest; (PC 0-21)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
 Method: Public testControlFlow (I)Ljava/lang/String;
   - Code: 
       MaxStack: 1, MaxLocals: 2, Code Size: 73 bytes
+        Instructions (16):
+          [0000] 1B                       ILOAD_1              ; labels: [L0000]
+          [0001] AA 00 00 00 00 00 24 00 00 00 00 00 00 00 02 00 00 00 1B 00 00 00 1E 00 00 00 21 TABLESWITCH        default->L0025; 0->L001C, 1->L001F, 2->L0022  ; labels: [L0001]
+          [001C] 12 12                    LDC                "Zero"  ; labels: [L001C]
+          [001E] B0                       ARETURN              ; labels: [L001E]
+          [001F] 12 14                    LDC                "One"  ; labels: [L001F]
+          [0021] B0                       ARETURN              ; labels: [L0021]
+          [0022] 12 16                    LDC                "Two"  ; labels: [L0022]
+          [0024] B0                       ARETURN              ; labels: [L0024]
+          [0025] 1B                       ILOAD_1              ; labels: [L0025]
+          [0026] AB 00 00 00 00 20 00 00 00 02 00 00 00 64 00 00 00 1A 00 00 13 88 00 00 00 1D LOOKUPSWITCH       default->L0046; 100->L0040, 5000->L0043  ; labels: [L0026]
+          [0040] 12 18                    LDC                "Hundred"  ; labels: [L0040]
+          [0042] B0                       ARETURN              ; labels: [L0042]
+          [0043] 12 1A                    LDC                "Five Thousand"  ; labels: [L0043]
+          [0045] B0                       ARETURN              ; labels: [L0045]
+          [0046] 12 1C                    LDC                "Unknown"  ; labels: [L0046]
+          [0048] B0                       ARETURN              ; labels: [L0048]
+        Control Flow Graph:
+          Blocks: 8, Edges: 7, Reachable: 8, Exits: 6, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..001C) entry; instructions=2; successors=SwitchDefault:default->B4, SwitchCase:case 0->B1, SwitchCase:case 1->B2, SwitchCase:case 2->B3
+            B1   [001C..001F) exit; instructions=2; successors=<exit>
+            B2   [001F..0022) exit; instructions=2; successors=<exit>
+            B3   [0022..0025) exit; instructions=2; successors=<exit>
+            B4   [0025..0040) reachable; instructions=2; successors=SwitchDefault:default->B7, SwitchCase:case 100->B5, SwitchCase:case 5000->B6
+            B5   [0040..0043) exit; instructions=2; successors=<exit>
+            B6   [0043..0046) exit; instructions=2; successors=<exit>
+            B7   [0046..0049) exit; instructions=2; successors=<exit>
+          Edges:
+            B0 -> B4: SwitchDefault (default)
+            B0 -> B1: SwitchCase (case 0)
+            B0 -> B2: SwitchCase (case 1)
+            B0 -> B3: SwitchCase (case 2)
+            B4 -> B7: SwitchDefault (default)
+            B4 -> B5: SwitchCase (case 100)
+            B4 -> B6: SwitchCase (case 5000)
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=16, TryCatch=0, CP entries=14
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (8):
@@ -515,13 +538,6 @@ Method: Public testControlFlow (I)Ljava/lang/String;
               PC 64 -> Line 86
               PC 67 -> Line 87
               PC 70 -> Line 88
-        - LocalVariableTable: 
-            Local Variables (2):
-              Slot 0: this LTest; (PC 0-73)
-              Slot 1: value I (PC 0-73)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
         - StackMapTable: 
             Entries: 7
               [0] Type: 28  (Same) Delta: 28
@@ -531,12 +547,89 @@ Method: Public testControlFlow (I)Ljava/lang/String;
               [4] Type: 26  (Same) Delta: 26
               [5] Type: 2   (Same) Delta: 2
               [6] Type: 2   (Same) Delta: 2
-  - MethodParameters: 
-      Parameters (01):
-        value (0)
 Method: Public testExceptions ()V
   - Code: 
       MaxStack: 3, MaxLocals: 3, Code Size: 94 bytes
+        Instructions (39):
+          [0000] 2A                       ALOAD_0              ; labels: [L0000]
+          [0001] B4 00 07                 GETFIELD           Test.isRunning Z  ; labels: [L0001]
+          [0004] 9A 00 0D                 IFNE               -> L0011  ; labels: [L0004]
+          [0007] BB 00 1E                 NEW                java/io/IOException  ; labels: [L0007]
+          [000A] 59                       DUP                  ; labels: [L000A]
+          [000B] 12 20                    LDC                "System not running"  ; labels: [L000B]
+          [000D] B7 00 22                 INVOKESPECIAL      java/io/IOException.<init> (Ljava/lang/String;)V  ; labels: [L000D]
+          [0010] BF                       ATHROW               ; labels: [L0010]
+          [0011] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0011]
+          [0014] 12 2B                    LDC                "Cleanup executed"  ; labels: [L0014]
+          [0016] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0016]
+          [0019] A7 00 44                 GOTO               -> L005D  ; labels: [L0019]
+          [001C] 4C                       ASTORE_1             ; labels: [L001C]
+          [001D] B2 00 34                 GETSTATIC          java/lang/System.err Ljava/io/PrintStream;  ; labels: [L001D]
+          [0020] 2B                       ALOAD_1              ; labels: [L0020]
+          [0021] B6 00 37                 INVOKEVIRTUAL      java/lang/Exception.getMessage ()Ljava/lang/String;  ; labels: [L0021]
+          [0024] BA 00 3D 00 00           INVOKEDYNAMIC      bootstrap=0 makeConcatWithConstants (Ljava/lang/String;)Ljava/lang/String;  ; labels: [L0024]
+          [0029] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0029]
+          [002C] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L002C]
+          [002F] 12 2B                    LDC                "Cleanup executed"  ; labels: [L002F]
+          [0031] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0031]
+          [0034] A7 00 29                 GOTO               -> L005D  ; labels: [L0034]
+          [0037] 4C                       ASTORE_1             ; labels: [L0037]
+          [0038] B2 00 34                 GETSTATIC          java/lang/System.err Ljava/io/PrintStream;  ; labels: [L0038]
+          [003B] 2B                       ALOAD_1              ; labels: [L003B]
+          [003C] B6 00 37                 INVOKEVIRTUAL      java/lang/Exception.getMessage ()Ljava/lang/String;  ; labels: [L003C]
+          [003F] BA 00 41 00 00           INVOKEDYNAMIC      bootstrap=1 makeConcatWithConstants (Ljava/lang/String;)Ljava/lang/String;  ; labels: [L003F]
+          [0044] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0044]
+          [0047] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0047]
+          [004A] 12 2B                    LDC                "Cleanup executed"  ; labels: [L004A]
+          [004C] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L004C]
+          [004F] A7 00 0E                 GOTO               -> L005D  ; labels: [L004F]
+          [0052] 4D                       ASTORE_2             ; labels: [L0052]
+          [0053] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0053]
+          [0056] 12 2B                    LDC                "Cleanup executed"  ; labels: [L0056]
+          [0058] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0058]
+          [005B] 2C                       ALOAD_2              ; labels: [L005B]
+          [005C] BF                       ATHROW               ; labels: [L005C]
+          [005D] B1                       RETURN               ; labels: [L005D]
+        TryCatchBlocks:
+          try [L0000..L0011) catch(java/io/IOException) -> L001C
+          try [L0000..L0011) catch(java/lang/NullPointerException) -> L001C
+          try [L0000..L0011) catch(java/lang/Exception) -> L0037
+          try [L0000..L0011) catch(finally) -> L0052
+          try [L001C..L002C) catch(finally) -> L0052
+          try [L0037..L0047) catch(finally) -> L0052
+        Control Flow Graph:
+          Blocks: 9, Edges: 17, Reachable: 9, Exits: 3, Backward: 0, Exception: 10
+          Basic Blocks:
+            B0   [0000..0007) entry; instructions=3; successors=ConditionalBranch:condition true->B2, FallThrough:condition false->B1, Exception:java/io/IOException->B3, Exception:java/lang/NullPointerException->B3, Exception:java/lang/Exception->B5, Exception:finally->B7
+            B1   [0007..0011) exit; instructions=5; successors=Exception:java/io/IOException->B3, Exception:java/lang/NullPointerException->B3, Exception:java/lang/Exception->B5, Exception:finally->B7
+            B2   [0011..001C) reachable; instructions=4; successors=UnconditionalBranch->B8
+            B3   [001C..002C) reachable; instructions=6; successors=FallThrough->B4, Exception:finally->B7
+            B4   [002C..0037) reachable; instructions=4; successors=UnconditionalBranch->B8
+            B5   [0037..0047) reachable; instructions=6; successors=FallThrough->B6, Exception:finally->B7
+            B6   [0047..0052) reachable; instructions=4; successors=UnconditionalBranch->B8
+            B7   [0052..005D) exit; instructions=6; successors=<exit>
+            B8   [005D..005E) exit; instructions=1; successors=<exit>
+          Edges:
+            B0 -> B2: ConditionalBranch (condition true)
+            B0 -> B1: FallThrough (condition false)
+            B2 -> B8: UnconditionalBranch
+            B3 -> B4: FallThrough
+            B4 -> B8: UnconditionalBranch
+            B5 -> B6: FallThrough
+            B6 -> B8: UnconditionalBranch
+            B0 -> B3: Exception (java/io/IOException)
+            B1 -> B3: Exception (java/io/IOException)
+            B0 -> B3: Exception (java/lang/NullPointerException)
+            B1 -> B3: Exception (java/lang/NullPointerException)
+            B0 -> B5: Exception (java/lang/Exception)
+            B1 -> B5: Exception (java/lang/Exception)
+            B0 -> B7: Exception (finally)
+            B1 -> B7: Exception (finally)
+            B3 -> B7: Exception (finally)
+            B5 -> B7: Exception (finally)
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=39, TryCatch=6, CP entries=45
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (15):
@@ -555,26 +648,63 @@ Method: Public testExceptions ()V
               PC 82 -> Line 107
               PC 91 -> Line 108
               PC 93 -> Line 109
-        - LocalVariableTable: 
-            Local Variables (3):
-              Slot 1: e Ljava/lang/Exception; (PC 29-44)
-              Slot 1: e Ljava/lang/Exception; (PC 56-71)
-              Slot 0: this LTest; (PC 0-94)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
         - StackMapTable: 
             Entries: 5
               [0] Type: 17  (Same) Delta: 17
               [1] Type: 74  (SameLocals1StackItem) Delta: 10 Stack: Obj(#56 java/lang/Exception)
               [2] Type: 90  (SameLocals1StackItem) Delta: 26 Stack: Obj(#56 java/lang/Exception)
-              [3] Type: 90  (SameLocals1StackItem) Delta: 26 Stack: Obj(#216 java/lang/Throwable)
+              [3] Type: 90  (SameLocals1StackItem) Delta: 26 Stack: Obj(#207 java/lang/Throwable)
               [4] Type: 10  (Same) Delta: 10
   - Exceptions: 
       Throws: java/io/IOException, java/lang/IllegalArgumentException
 Method: Public testLambdaAndStreams ()V
   - Code: 
       MaxStack: 4, MaxLocals: 5, Code Size: 83 bytes
+        Instructions (36):
+          [0000] 06                       ICONST_3             ; labels: [L0000]
+          [0001] BD 00 42                 ANEWARRAY          java/lang/String  ; labels: [L0001]
+          [0004] 59                       DUP                  ; labels: [L0004]
+          [0005] 03                       ICONST_0             ; labels: [L0005]
+          [0006] 12 44                    LDC                "Alice"  ; labels: [L0006]
+          [0008] 53                       AASTORE              ; labels: [L0008]
+          [0009] 59                       DUP                  ; labels: [L0009]
+          [000A] 04                       ICONST_1             ; labels: [L000A]
+          [000B] 12 46                    LDC                "Bob"  ; labels: [L000B]
+          [000D] 53                       AASTORE              ; labels: [L000D]
+          [000E] 59                       DUP                  ; labels: [L000E]
+          [000F] 05                       ICONST_2             ; labels: [L000F]
+          [0010] 12 48                    LDC                "Charlie"  ; labels: [L0010]
+          [0012] 53                       AASTORE              ; labels: [L0012]
+          [0013] B8 00 4A                 INVOKESTATIC       java/util/Arrays.asList ([Ljava/lang/Object;)Ljava/util/List;  ; labels: [L0013]
+          [0016] 4C                       ASTORE_1             ; labels: [L0016]
+          [0017] BA 00 50 00 00           INVOKEDYNAMIC      bootstrap=2 accept ()Ljava/util/function/Consumer;  ; labels: [L0017]
+          [001C] 4D                       ASTORE_2             ; labels: [L001C]
+          [001D] 2B                       ALOAD_1              ; labels: [L001D]
+          [001E] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L001E]
+          [0021] 59                       DUP                  ; labels: [L0021]
+          [0022] B8 00 54                 INVOKESTATIC       java/util/Objects.requireNonNull (Ljava/lang/Object;)Ljava/lang/Object;  ; labels: [L0022]
+          [0025] 57                       POP                  ; labels: [L0025]
+          [0026] BA 00 5A 00 00           INVOKEDYNAMIC      bootstrap=3 accept (Ljava/io/PrintStream;)Ljava/util/function/Consumer;  ; labels: [L0026]
+          [002B] B9 00 5D 02 00           INVOKEINTERFACE    java/util/List.forEach (Ljava/util/function/Consumer;)V  ; labels: [L002B]
+          [0030] 2B                       ALOAD_1              ; labels: [L0030]
+          [0031] B9 00 63 01 00           INVOKEINTERFACE    java/util/List.stream ()Ljava/util/stream/Stream;  ; labels: [L0031]
+          [0036] BA 00 67 00 00           INVOKEDYNAMIC      bootstrap=4 test ()Ljava/util/function/Predicate;  ; labels: [L0036]
+          [003B] B9 00 6B 02 00           INVOKEINTERFACE    java/util/stream/Stream.filter (Ljava/util/function/Predicate;)Ljava/util/stream/Stream;  ; labels: [L003B]
+          [0040] B9 00 71 01 00           INVOKEINTERFACE    java/util/stream/Stream.count ()J  ; labels: [L0040]
+          [0045] 42                       LSTORE_3             ; labels: [L0045]
+          [0046] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0046]
+          [0049] 21                       LLOAD_3              ; labels: [L0049]
+          [004A] BA 00 75 00 00           INVOKEDYNAMIC      bootstrap=5 makeConcatWithConstants (J)Ljava/lang/String;  ; labels: [L004A]
+          [004F] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L004F]
+          [0052] B1                       RETURN               ; labels: [L0052]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..0053) entry, exit; instructions=36; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=36, TryCatch=0, CP entries=69
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (8):
@@ -586,20 +716,42 @@ Method: Public testLambdaAndStreams ()V
               PC 64 -> Line 127
               PC 70 -> Line 129
               PC 82 -> Line 130
-        - LocalVariableTable: 
-            Local Variables (4):
-              Slot 0: this LTest; (PC 0-83)
-              Slot 1: names Ljava/util/List; (PC 23-83)
-              Slot 2: printer Ljava/util/function/Consumer; (PC 29-83)
-              Slot 3: count J (PC 70-83)
-        - LocalVariableTypeTable: 
-            Local Variable Types (3):
-              Slot 0: this LTest<TT;>;
-              Slot 1: names Ljava/util/List<Ljava/lang/String;>;
-              Slot 2: printer Ljava/util/function/Consumer<Ljava/lang/String;>;
 Method: Public testGenerics (Ljava/util/List;Ljava/util/Map;)V
   - Code: 
       MaxStack: 3, MaxLocals: 5, Code Size: 47 bytes
+        Instructions (17):
+          [0000] 2B                       ALOAD_1              ; labels: [L0000]
+          [0001] B9 00 78 01 00           INVOKEINTERFACE    java/util/List.iterator ()Ljava/util/Iterator;  ; labels: [L0001]
+          [0006] 4E                       ASTORE_3             ; labels: [L0006]
+          [0007] 2D                       ALOAD_3              ; labels: [L0007]
+          [0008] B9 00 7C 01 00           INVOKEINTERFACE    java/util/Iterator.hasNext ()Z  ; labels: [L0008]
+          [000D] 99 00 21                 IFEQ               -> L002E  ; labels: [L000D]
+          [0010] 2D                       ALOAD_3              ; labels: [L0010]
+          [0011] B9 00 82 01 00           INVOKEINTERFACE    java/util/Iterator.next ()Ljava/lang/Object;  ; labels: [L0011]
+          [0016] C0 00 86                 CHECKCAST          java/lang/Number  ; labels: [L0016]
+          [0019] 3A 04                    ASTORE             4  ; labels: [L0019]
+          [001B] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L001B]
+          [001E] 19 04                    ALOAD              4  ; labels: [L001E]
+          [0020] B6 00 88                 INVOKEVIRTUAL      java/lang/Number.doubleValue ()D  ; labels: [L0020]
+          [0023] BA 00 8C 00 00           INVOKEDYNAMIC      bootstrap=6 makeConcatWithConstants (D)Ljava/lang/String;  ; labels: [L0023]
+          [0028] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0028]
+          [002B] A7 FF DC                 GOTO               -> L0007  ; labels: [L002B]
+          [002E] B1                       RETURN               ; labels: [L002E]
+        Control Flow Graph:
+          Blocks: 4, Edges: 4, Reachable: 4, Exits: 1, Backward: 1, Exception: 0
+          Basic Blocks:
+            B0   [0000..0007) entry; instructions=3; successors=FallThrough->B1
+            B1   [0007..0010) reachable; instructions=3; successors=ConditionalBranch:condition true->B3, FallThrough:condition false->B2
+            B2   [0010..002E) reachable; instructions=10; successors=UnconditionalBranch->B1
+            B3   [002E..002F) exit; instructions=1; successors=<exit>
+          Edges:
+            B0 -> B1: FallThrough
+            B1 -> B3: ConditionalBranch (condition true)
+            B1 -> B2: FallThrough (condition false)
+            B2 -> B1: UnconditionalBranch [backward]
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=17, TryCatch=0, CP entries=40
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (4):
@@ -607,31 +759,59 @@ Method: Public testGenerics (Ljava/util/List;Ljava/util/Map;)V
               PC 27 -> Line 138
               PC 43 -> Line 139
               PC 46 -> Line 140
-        - LocalVariableTable: 
-            Local Variables (4):
-              Slot 4: num Ljava/lang/Number; (PC 27-43)
-              Slot 0: this LTest; (PC 0-47)
-              Slot 1: numbers Ljava/util/List; (PC 0-47)
-              Slot 2: map Ljava/util/Map; (PC 0-47)
-        - LocalVariableTypeTable: 
-            Local Variable Types (4):
-              Slot 4: num TE;
-              Slot 0: this LTest<TT;>;
-              Slot 1: numbers Ljava/util/List<TE;>;
-              Slot 2: map Ljava/util/Map<Ljava/lang/String;TE;>;
         - StackMapTable: 
             Entries: 2
               [0] Type: 252 (Append 1) Delta: 7 Locals: [Obj(#125 java/util/Iterator)]
               [1] Type: 250 (Chop 1) Delta: 38
-  - MethodParameters: 
-      Parameters (02):
-        numbers (0)
-        map (0)
   - Signature: 
       Signature: <E:Ljava/lang/Number;>(Ljava/util/List<TE;>;Ljava/util/Map<Ljava/lang/String;TE;>;)V
 Method: Public, Synchronized testSyncAndMath ()V
   - Code: 
       MaxStack: 3, MaxLocals: 5, Code Size: 35 bytes
+        Instructions (21):
+          [0000] 0E                       DCONST_0             ; labels: [L0000]
+          [0001] 48                       DSTORE_1             ; labels: [L0001]
+          [0002] 2A                       ALOAD_0              ; labels: [L0002]
+          [0003] 59                       DUP                  ; labels: [L0003]
+          [0004] 4E                       ASTORE_3             ; labels: [L0004]
+          [0005] C2                       MONITORENTER         ; labels: [L0005]
+          [0006] 14 00 91                 LDC2_W             6.283185307179586d  ; labels: [L0006]
+          [0009] 48                       DSTORE_1             ; labels: [L0009]
+          [000A] 2D                       ALOAD_3              ; labels: [L000A]
+          [000B] C3                       MONITOREXIT          ; labels: [L000B]
+          [000C] A7 00 0A                 GOTO               -> L0016  ; labels: [L000C]
+          [000F] 3A 04                    ASTORE             4  ; labels: [L000F]
+          [0011] 2D                       ALOAD_3              ; labels: [L0011]
+          [0012] C3                       MONITOREXIT          ; labels: [L0012]
+          [0013] 19 04                    ALOAD              4  ; labels: [L0013]
+          [0015] BF                       ATHROW               ; labels: [L0015]
+          [0016] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0016]
+          [0019] 27                       DLOAD_1              ; labels: [L0019]
+          [001A] BA 00 93 00 00           INVOKEDYNAMIC      bootstrap=7 makeConcatWithConstants (D)Ljava/lang/String;  ; labels: [L001A]
+          [001F] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L001F]
+          [0022] B1                       RETURN               ; labels: [L0022]
+        TryCatchBlocks:
+          try [L0006..L000C) catch(finally) -> L000F
+          try [L000F..L0013) catch(finally) -> L000F
+        Control Flow Graph:
+          Blocks: 6, Edges: 6, Reachable: 6, Exits: 2, Backward: 0, Exception: 2
+          Basic Blocks:
+            B0   [0000..0006) entry; instructions=6; successors=FallThrough->B1
+            B1   [0006..000C) reachable; instructions=4; successors=FallThrough->B2, Exception:finally->B3
+            B2   [000C..000F) reachable; instructions=1; successors=UnconditionalBranch->B5
+            B3   [000F..0013) reachable; instructions=3; successors=FallThrough->B4, Exception:finally->B3
+            B4   [0013..0016) exit; instructions=2; successors=<exit>
+            B5   [0016..0023) exit; instructions=5; successors=<exit>
+          Edges:
+            B0 -> B1: FallThrough
+            B1 -> B2: FallThrough
+            B2 -> B5: UnconditionalBranch
+            B3 -> B4: FallThrough
+            B1 -> B3: Exception (finally)
+            B3 -> B3: Exception (finally)
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=21, TryCatch=2, CP entries=20
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (6):
@@ -641,41 +821,61 @@ Method: Public, Synchronized testSyncAndMath ()V
               PC 10 -> Line 150
               PC 22 -> Line 151
               PC 34 -> Line 152
-        - LocalVariableTable: 
-            Local Variables (2):
-              Slot 0: this LTest; (PC 0-35)
-              Slot 1: result D (PC 2-35)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
         - StackMapTable: 
             Entries: 2
               [0] Type: 255 (Full) Delta: 15
                   Locals: [Obj(#8 Test), Double, Obj(#2 java/lang/Object)]
-                  Stack:  [Obj(#216 java/lang/Throwable)]
+                  Stack:  [Obj(#207 java/lang/Throwable)]
               [1] Type: 250 (Chop 1) Delta: 6
 Method: Public, Varargs testVarargs ([Ljava/lang/String;)V
   - Code: 
       MaxStack: 2, MaxLocals: 2, Code Size: 14 bytes
+        Instructions (6):
+          [0000] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0000]
+          [0003] 2B                       ALOAD_1              ; labels: [L0003]
+          [0004] BE                       ARRAYLENGTH          ; labels: [L0004]
+          [0005] BA 00 94 00 00           INVOKEDYNAMIC      bootstrap=8 makeConcatWithConstants (I)Ljava/lang/String;  ; labels: [L0005]
+          [000A] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L000A]
+          [000D] B1                       RETURN               ; labels: [L000D]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..000E) entry, exit; instructions=6; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=6, TryCatch=0, CP entries=18
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (2):
               PC 0 -> Line 159
               PC 13 -> Line 160
-        - LocalVariableTable: 
-            Local Variables (2):
-              Slot 0: this LTest; (PC 0-14)
-              Slot 1: args [Ljava/lang/String; (PC 0-14)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
-  - MethodParameters: 
-      Parameters (01):
-        args (0)
 Method: Public, Native nativeMethodExample ()V
 Method: Public testInnerClasses ()V
   - Code: 
       MaxStack: 3, MaxLocals: 2, Code Size: 27 bytes
+        Instructions (13):
+          [0000] BB 00 97                 NEW                Test$1LocalClass  ; labels: [L0000]
+          [0003] 59                       DUP                  ; labels: [L0003]
+          [0004] 2A                       ALOAD_0              ; labels: [L0004]
+          [0005] B7 00 99                 INVOKESPECIAL      Test$1LocalClass.<init> (LTest;)V  ; labels: [L0005]
+          [0008] B6 00 9C                 INVOKEVIRTUAL      Test$1LocalClass.print ()V  ; labels: [L0008]
+          [000B] BB 00 9F                 NEW                Test$1  ; labels: [L000B]
+          [000E] 59                       DUP                  ; labels: [L000E]
+          [000F] 2A                       ALOAD_0              ; labels: [L000F]
+          [0010] B7 00 A1                 INVOKESPECIAL      Test$1.<init> (LTest;)V  ; labels: [L0010]
+          [0013] 4C                       ASTORE_1             ; labels: [L0013]
+          [0014] 2B                       ALOAD_1              ; labels: [L0014]
+          [0015] B9 00 A2 01 00           INVOKEINTERFACE    java/lang/Runnable.run ()V  ; labels: [L0015]
+          [001A] B1                       RETURN               ; labels: [L001A]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..001B) entry, exit; instructions=13; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=13, TryCatch=0, CP entries=20
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (4):
@@ -683,16 +883,54 @@ Method: Public testInnerClasses ()V
               PC 11 -> Line 190
               PC 20 -> Line 196
               PC 26 -> Line 197
-        - LocalVariableTable: 
-            Local Variables (2):
-              Slot 0: this LTest; (PC 0-27)
-              Slot 1: r Ljava/lang/Runnable; (PC 20-27)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 0: this LTest<TT;>;
 Method: Public, Static main ([Ljava/lang/String;)V
   - Code: 
       MaxStack: 3, MaxLocals: 3, Code Size: 57 bytes
+        Instructions (25):
+          [0000] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0000]
+          [0003] 12 A7                    LDC                "=== Starting Bytecode Analysis Test ==="  ; labels: [L0003]
+          [0005] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0005]
+          [0008] BB 00 08                 NEW                Test  ; labels: [L0008]
+          [000B] 59                       DUP                  ; labels: [L000B]
+          [000C] B7 00 A9                 INVOKESPECIAL      Test.<init> ()V  ; labels: [L000C]
+          [000F] 4C                       ASTORE_1             ; labels: [L000F]
+          [0010] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0010]
+          [0013] 2B                       ALOAD_1              ; labels: [L0013]
+          [0014] 04                       ICONST_1             ; labels: [L0014]
+          [0015] B6 00 AA                 INVOKEVIRTUAL      Test.testControlFlow (I)Ljava/lang/String;  ; labels: [L0015]
+          [0018] BA 00 AD 00 00           INVOKEDYNAMIC      bootstrap=9 makeConcatWithConstants (Ljava/lang/String;)Ljava/lang/String;  ; labels: [L0018]
+          [001D] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L001D]
+          [0020] 2B                       ALOAD_1              ; labels: [L0020]
+          [0021] B6 00 AE                 INVOKEVIRTUAL      Test.testLambdaAndStreams ()V  ; labels: [L0021]
+          [0024] 2B                       ALOAD_1              ; labels: [L0024]
+          [0025] B6 00 B1                 INVOKEVIRTUAL      Test.testInnerClasses ()V  ; labels: [L0025]
+          [0028] 2B                       ALOAD_1              ; labels: [L0028]
+          [0029] B6 00 B4                 INVOKEVIRTUAL      Test.testExceptions ()V  ; labels: [L0029]
+          [002C] A7 00 04                 GOTO               -> L0030  ; labels: [L002C]
+          [002F] 4D                       ASTORE_2             ; labels: [L002F]
+          [0030] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0030]
+          [0033] 12 B7                    LDC                "=== Test Completed ==="  ; labels: [L0033]
+          [0035] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0035]
+          [0038] B1                       RETURN               ; labels: [L0038]
+        TryCatchBlocks:
+          try [L0028..L002C) catch(java/lang/Exception) -> L002F
+        Control Flow Graph:
+          Blocks: 5, Edges: 5, Reachable: 5, Exits: 1, Backward: 0, Exception: 1
+          Basic Blocks:
+            B0   [0000..0028) entry; instructions=17; successors=FallThrough->B1
+            B1   [0028..002C) reachable; instructions=2; successors=FallThrough->B2, Exception:java/lang/Exception->B3
+            B2   [002C..002F) reachable; instructions=1; successors=UnconditionalBranch->B4
+            B3   [002F..0030) reachable; instructions=1; successors=FallThrough->B4
+            B4   [0030..0039) exit; instructions=4; successors=<exit>
+          Edges:
+            B0 -> B1: FallThrough
+            B1 -> B2: FallThrough
+            B2 -> B4: UnconditionalBranch
+            B3 -> B4: FallThrough
+            B1 -> B3: Exception (java/lang/Exception)
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=25, TryCatch=1, CP entries=43
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (10):
@@ -706,42 +944,53 @@ Method: Public, Static main ([Ljava/lang/String;)V
               PC 47 -> Line 219
               PC 48 -> Line 223
               PC 56 -> Line 224
-        - LocalVariableTable: 
-            Local Variables (2):
-              Slot 0: args [Ljava/lang/String; (PC 0-57)
-              Slot 1: test LTest; (PC 16-57)
-        - LocalVariableTypeTable: 
-            Local Variable Types (1):
-              Slot 1: test LTest<Ljava/lang/Integer;>;
         - StackMapTable: 
             Entries: 2
               [0] Type: 255 (Full) Delta: 47
-                  Locals: [Obj(#252 [Ljava/lang/String;), Obj(#8 Test)]
+                  Locals: [Obj(#221 [Ljava/lang/String;), Obj(#8 Test)]
                   Stack:  [Obj(#56 java/lang/Exception)]
               [1] Type: 0   (Same) Delta: 0
-  - MethodParameters: 
-      Parameters (01):
-        args (0)
 Method: Private, Static, Synthetic lambda$testLambdaAndStreams$1 (Ljava/lang/String;)Z
   - Code: 
       MaxStack: 2, MaxLocals: 1, Code Size: 7 bytes
+        Instructions (4):
+          [0000] 2A                       ALOAD_0              ; labels: [L0000]
+          [0001] 12 B9                    LDC                "A"  ; labels: [L0001]
+          [0003] B6 00 BB                 INVOKEVIRTUAL      java/lang/String.startsWith (Ljava/lang/String;)Z  ; labels: [L0003]
+          [0006] AC                       IRETURN              ; labels: [L0006]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..0007) entry, exit; instructions=4; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=4, TryCatch=0, CP entries=10
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (1):
               PC 0 -> Line 126
-        - LocalVariableTable: 
-            Local Variables (1):
-              Slot 0: s Ljava/lang/String; (PC 0-7)
 Method: Private, Static, Synthetic lambda$testLambdaAndStreams$0 (Ljava/lang/String;)V
   - Code: 
       MaxStack: 2, MaxLocals: 1, Code Size: 13 bytes
+        Instructions (5):
+          [0000] B2 00 25                 GETSTATIC          java/lang/System.out Ljava/io/PrintStream;  ; labels: [L0000]
+          [0003] 2A                       ALOAD_0              ; labels: [L0003]
+          [0004] BA 00 BF 00 00           INVOKEDYNAMIC      bootstrap=10 makeConcatWithConstants (Ljava/lang/String;)Ljava/lang/String;  ; labels: [L0004]
+          [0009] B6 00 2D                 INVOKEVIRTUAL      java/io/PrintStream.println (Ljava/lang/String;)V  ; labels: [L0009]
+          [000C] B1                       RETURN               ; labels: [L000C]
+        Control Flow Graph:
+          Blocks: 1, Edges: 0, Reachable: 1, Exits: 1, Backward: 0, Exception: 0
+          Basic Blocks:
+            B0   [0000..000D) entry, exit; instructions=5; successors=<exit>
+          Edges:
+        Round-Trip:
+          DIFF: Same length but bytes differ (constant-pool indices may vary).
+          Instructions=5, TryCatch=0, CP entries=18
       Sub-Attributes:
         - LineNumberTable: 
             Line Numbers (1):
               PC 0 -> Line 119
-        - LocalVariableTable: 
-            Local Variables (1):
-              Slot 0: s Ljava/lang/String; (PC 0-13)
 
 === Class Attributes (6) ===
 - Signature: 
@@ -754,17 +1003,17 @@ Method: Private, Static, Synthetic lambda$testLambdaAndStreams$0 (Ljava/lang/Str
     Members: Test$InnerMember, Test$StaticNested, Test$1, Test$1LocalClass
 - BootstrapMethods: 
     Bootstrap Methods (11):
-      [0] Ref: #298, Args: [#269]
-      [1] Ref: #298, Args: [#271]
-      [2] Ref: #304, Args: [#273, #275, #278]
-      [3] Ref: #304, Args: [#273, #279, #278]
-      [4] Ref: #304, Args: [#280, #282, #285]
-      [5] Ref: #298, Args: [#286]
-      [6] Ref: #298, Args: [#288]
-      [7] Ref: #298, Args: [#290]
-      [8] Ref: #298, Args: [#292]
-      [9] Ref: #298, Args: [#294]
-      [10] Ref: #298, Args: [#296]
+      [0] Ref: #267, Args: [#238]
+      [1] Ref: #267, Args: [#240]
+      [2] Ref: #273, Args: [#242, #244, #247]
+      [3] Ref: #273, Args: [#242, #248, #247]
+      [4] Ref: #273, Args: [#249, #251, #254]
+      [5] Ref: #267, Args: [#255]
+      [6] Ref: #267, Args: [#257]
+      [7] Ref: #267, Args: [#259]
+      [8] Ref: #267, Args: [#261]
+      [9] Ref: #267, Args: [#263]
+      [10] Ref: #267, Args: [#265]
 - InnerClasses: 
     Inner Classes (5):
       Test$1LocalClass (Outer: None) - 0
